@@ -27,7 +27,7 @@ export class WaitForElement {
         }
 
         if (this.appiumDriver !== undefined) {
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < iteration; i++) {
                 if (await this.appiumDriver.$(selector).isDisplayed() === true) {
                     break;
                 }

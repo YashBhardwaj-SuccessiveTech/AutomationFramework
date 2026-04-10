@@ -173,3 +173,9 @@ Playwright for web automation
 Appium with WebdriverIO for mobile automation
 Cucumber for BDD-style testing
 Page Object Model pattern for better maintainability
+
+
+
+
+for package.json mobile 
+// "mobile": "cucumber-js src/features/mobile/**/*.feature --require-module ts-node/register --require src/base/hooks/**/*.ts --require src/step-definitions/**/*.ts",

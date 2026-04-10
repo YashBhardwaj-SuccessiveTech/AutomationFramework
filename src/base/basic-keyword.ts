@@ -31,6 +31,9 @@ import { PwVerifyEnabled } from './keywords/verifications/pw/PwVerifyEnabled';
 import { ApVerifyText } from './keywords/verifications/ap/ApVerifyText';
 import { ApVerifyDisplayed } from './keywords/verifications/ap/ApVerifyDisplayed';
 import { ApVerifyEnabled } from './keywords/verifications/ap/ApVerifyEnabled';
+import { AddValue } from './keywords/actions/shared/AddValue';
+import { ApHideKeyword } from './keywords/actions/appium/ApHideKeyword';
+import { ApScrollForward } from './keywords/actions/appium/ApScrollForward';
 
 export class BasicKeyword {
     protected playwrightBrowser?: Browser;
@@ -68,6 +71,9 @@ export class BasicKeyword {
     private apVerifyTextAction = new ApVerifyText();
     private apVerifyDisplayedAction = new ApVerifyDisplayed();
     private apVerifyEnabledAction = new ApVerifyEnabled();
+    private addValueAction = new AddValue();
+    private hideKeywordAction = new ApHideKeyword();
+    private scrollForwardAction = new ApScrollForward();
 
     constructor(playwrightPage?: Page, appiumDriver?: AppiumBrowser) {
         if (playwrightPage) this.playwrightPage = playwrightPage;
@@ -101,67 +107,6 @@ export class BasicKeyword {
         return this.appiumDriver;
     }
 
-    // --- Playwright Actions ---
-    async pwGoto(url: string) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwGotoAction['playwrightPage'] = this.playwrightPage;
-        await this.pwGotoAction.execute(url);
-    }
-
-    async pwPress(selector: string, key: string) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwPressAction['playwrightPage'] = this.playwrightPage;
-        await this.pwPressAction.execute(selector, key);
-    }
-
-    async pwWaitForSelector(selector: string, timeout = 5000) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwWaitForSelectorAction['playwrightPage'] = this.playwrightPage;
-        await this.pwWaitForSelectorAction.execute(selector, timeout);
-    }
-
-    async pwSelectOption(selector: string, value: string) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwSelectOptionAction['playwrightPage'] = this.playwrightPage;
-        await this.pwSelectOptionAction.execute(selector, value);
-    }
-
-    async pwHover(selector: string) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwHoverAction['playwrightPage'] = this.playwrightPage;
-        await this.pwHoverAction.execute(selector);
-    }
-
-    async pwFocus(selector: string) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwFocusAction['playwrightPage'] = this.playwrightPage;
-        await this.pwFocusAction.execute(selector);
-    }
-
-    async pwBlur(selector: string) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwBlurAction['playwrightPage'] = this.playwrightPage;
-        await this.pwBlurAction.execute(selector);
-    }
-
-    async pwCheck(selector: string) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwCheckAction['playwrightPage'] = this.playwrightPage;
-        await this.pwCheckAction.execute(selector);
-    }
-
-    async pwUncheck(selector: string) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwUncheckAction['playwrightPage'] = this.playwrightPage;
-        await this.pwUncheckAction.execute(selector);
-    }
-
-    async pwScreenshot(path: string) {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwScreenshotAction['playwrightPage'] = this.playwrightPage;
-        await this.pwScreenshotAction.execute(path);
-    }
-
     // --- Appium Actions ---
     async apGetText(selector: string): Promise<string> {
         if (!this.appiumDriver) throw new Error('Appium driver not initialized');
@@ -191,6 +136,18 @@ export class BasicKeyword {
         if (!this.appiumDriver) throw new Error('Appium driver not initialized');
         this.apPressKeyCodeAction['appiumDriver'] = this.appiumDriver;
         await this.apPressKeyCodeAction.execute(keyCode);
+    }
+
+    async apHideKeyword(){
+        if(!this.appiumDriver) throw new Error(`Appium driver not initialized`);
+        this.hideKeywordAction['appiumDriver'] = this.appiumDriver;
+        await this.hideKeywordAction.execute();
+    }
+
+    async scrollForward(){
+        if(!this.appiumDriver) throw new Error(`Appium driver not initialized`);
+        this.scrollForwardAction['appiumDriver'] = this.appiumDriver;
+        await this.scrollForwardAction.execute();
     }
 
     async apLongPress(selector: string, duration = 1000) {
@@ -247,51 +204,14 @@ export class BasicKeyword {
     }
 
     async typeInput(selector: string, value: string) {
-        this.setValueAction['playwrightPage'] = this.playwrightPage;
+        // this.setValueAction['playwrightPage'] = this.playwrightPage;
         this.setValueAction['appiumDriver'] = this.appiumDriver;
         await this.setValueAction.execute(selector, value);
     }
 
-    // --- Playwright Verifications ---
-    async pwGetText(selector: string): Promise<string> {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwVerifyTextAction['playwrightPage'] = this.playwrightPage;
-        return await this.playwrightPage.textContent(selector) || '';
-    }
-
-    async pwVerifyText(selector: string, expected: string): Promise<boolean> {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwVerifyTextAction['playwrightPage'] = this.playwrightPage;
-        return await this.pwVerifyTextAction.execute(selector, expected);
-    }
-
-    async pwIsVisible(selector: string): Promise<boolean> {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwVerifyVisibleAction['playwrightPage'] = this.playwrightPage;
-        return await this.pwVerifyVisibleAction.execute(selector);
-    }
-
-    async pwVerifyVisible(selector: string): Promise<boolean> {
-        return await this.pwIsVisible(selector);
-    }
-
-    async pwIsEnabled(selector: string): Promise<boolean> {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        this.pwVerifyEnabledAction['playwrightPage'] = this.playwrightPage;
-        return await this.pwVerifyEnabledAction.execute(selector);
-    }
-
-    async pwVerifyEnabled(selector: string): Promise<boolean> {
-        return await this.pwIsEnabled(selector);
-    }
-
-    async pwIsChecked(selector: string): Promise<boolean> {
-        if (!this.playwrightPage) throw new Error('Playwright page not initialized');
-        return await this.playwrightPage.isChecked(selector);
-    }
-
-    async pwVerifyChecked(selector: string): Promise<boolean> {
-        return await this.pwIsChecked(selector);
+    async typeValue(selector: string, value: string){
+        this.addValueAction['appiumDriver'] = this.appiumDriver;
+        await this.addValueAction.execute(selector,value);
     }
 
     // --- Appium Verifications ---
