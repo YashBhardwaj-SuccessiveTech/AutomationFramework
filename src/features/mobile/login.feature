@@ -7,7 +7,8 @@ Feature: As a user I want to test login functionality on VIP Play mobile app
     When User enters the email id
     And User enters the password
     And User click on sign-in button
-
-
+    And User enters the phone otp
+    And User submits the phone otp
+    Then User must be redirected to Dashboard
 
     

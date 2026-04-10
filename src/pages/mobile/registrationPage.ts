@@ -37,12 +37,78 @@ export class RegistrationPage {
         mob: "0231212003",
         ssn: "001301034",
     };
-
      
 
     constructor(driver: Browser) {
         this.basic = new BasicKeyword(undefined, driver);
-    }   
+    }
+
+    // --- High-level actions used by step-definitions ---
+    async launchApp(): Promise<void> {
+        await this.basic.sleep(2000);
+    }
+
+    // async allowLocationPermission(): Promise<void> {
+    //     await this.basic.clickElement('~Share Location');
+    //     await this.basic.clickElement('id=com.android.permissioncontroller:id/permission_allow_foreground_only_button');
+    // }
+
+    async tapSignup(): Promise<void> {
+        await this.basic.clickElement(this.locators.btnSignup);
+    }
+
+    async enterCredentials(email: string, password: string): Promise<void> {
+        await this.basic.setValue(this.locators.txtEmailID, email);
+        await this.basic.setValue(this.locators.txtPassword, password);
+    }
+
+    async acceptTerms(): Promise<void> {
+        await this.basic.clickElement(this.locators.chkPP);
+        await this.basic.clickElement(this.locators.chkTnC);
+    }
+
+    async tapCreateAccount(): Promise<void> {
+        await this.basic.clickElement(this.locators.btnCreateAccount);
+    }
+
+    async enterEmailOtp(otp: string): Promise<void> {
+        await this.basic.setValue(this.locators.txtOTP, otp);
+    }
+
+    async submitOtp(): Promise<void> {
+        await this.basic.clickElement(this.locators.btnSubmit);
+    }
+
+    async enterPhoneNumber(phone: string): Promise<void> {
+        await this.basic.setValue(this.locators.txtMobile, phone);
+    }
+
+    async submitPhoneNumber(): Promise<void> {
+        await this.basic.clickElement(this.locators.btnContinue);
+    }
+
+    async enterPhoneOtp(otp: string): Promise<void> {
+        await this.basic.setValue(this.locators.txtOTP, otp);
+    }
+
+    async fillPersonalDetails(): Promise<void> {
+        await this.basic.setValue(this.locators.txtFirstName, 'Yash');
+        await this.basic.clickElement(this.locators.chkMiddleName);
+        await this.basic.setValue(this.locators.txtLastName, 'Bhardwaj');
+        await this.basic.clickElement(this.locators.lsSuffix);
+        await this.basic.clickElement(this.locators.lsValue);
+        await this.basic.clickElement(this.locators.dtDOB);
+        await this.basic.clickElement(this.locators.dtYear);
+        await this.basic.clickElement(this.locators.btnOK);
+        await this.basic.setValue(this.locators.txtSSN, this.data.ssn);
+        await this.basic.setValue(this.locators.txtAddress, 'u');
+        await this.basic.clickElement(this.locators.dpAddress);
+        await this.basic.clickElement(this.locators.btnConfirm);
+    }
+
+    async verifyRegistrationSuccess(): Promise<void> {
+        await this.basic.apVerifyDisplayed(this.locators.btnDone);
+    }
 
     async regisrtation_flow(): Promise<void> {
         await this.basic.getAppiumDriver()?.pause(10000);

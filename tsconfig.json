@@ -12,5 +12,6 @@
     "types": ["node", "@cucumber/cucumber"]
   },
   "include": ["src/**/*"],
+  // "include": ["src/**/*", "src/step-definitions/mobile/Registration.ts"],
   "exclude": ["node_modules"]
 }
